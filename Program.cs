@@ -16,7 +16,7 @@ class LinkedList<T>
 {
     private Node<T> head;
 
-    public void Add(T data)
+    public void Append(T data)
     {
         Node<T> newNode = new Node<T>(data);
 
@@ -26,8 +26,12 @@ class LinkedList<T>
         }
         else
         {
-            newNode.Next = head;
-            head = newNode;
+            Node<T> current = head;
+            while (current.Next != null)
+            {
+                current = current.Next;
+            }
+            current.Next = newNode;
         }
     }
 
@@ -49,10 +53,10 @@ class Program
     {
         LinkedList<int> linkedList = new LinkedList<int>();
 
-        // Add values to the linked list in the specified sequence
-        linkedList.Add(70);
-        linkedList.Add(30);
-        linkedList.Add(56);
+        // Append values to the linked list in the specified sequence
+        linkedList.Append(56);
+        linkedList.Append(30);
+        linkedList.Append(70);
 
         // Display the linked list
         linkedList.Display();
