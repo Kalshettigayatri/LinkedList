@@ -14,19 +14,19 @@ class Node<T>
 
 class LinkedList<T>
 {
-    private Node<T> head;
+    public Node<T> Head { get; private set; }
 
     public void Append(T data)
     {
         Node<T> newNode = new Node<T>(data);
 
-        if (head == null)
+        if (Head == null)
         {
-            head = newNode;
+            Head = newNode;
         }
         else
         {
-            Node<T> current = head;
+            Node<T> current = Head;
             while (current.Next != null)
             {
                 current = current.Next;
@@ -35,36 +35,41 @@ class LinkedList<T>
         }
     }
 
+    public Node<T> Search(T key)
+    {
+        Node<T> current = Head;
+        while (current != null)
+        {
+            if (current.Data.Equals(key))
+            {
+                return current;
+            }
+            current = current.Next;
+        }
+        return null; // Node with the given key not found
+    }
+
+    public void InsertAfter(Node<T> node, T data)
+    {
+        if (node == null)
+        {
+            throw new ArgumentNullException(nameof(node));
+        }
+
+        Node<T> newNode = new Node<T>(data);
+        newNode.Next = node.Next;
+        node.Next = newNode;
+    }
+
     public void Display()
     {
-        Node<T> current = head;
+        Node<T> current = Head;
         while (current != null)
         {
             Console.Write(current.Data + "->");
             current = current.Next;
         }
         Console.WriteLine("null");
-    }
-
-    public void PopLast()
-    {
-        if (head == null)
-        {
-            throw new InvalidOperationException("LinkedList is empty");
-        }
-        else if (head.Next == null)
-        {
-            head = null;
-        }
-        else
-        {
-            Node<T> current = head;
-            while (current.Next.Next != null)
-            {
-                current = current.Next;
-            }
-            current.Next = null;
-        }
     }
 }
 
@@ -74,7 +79,6 @@ class Program
     {
         LinkedList<int> linkedList = new LinkedList<int>();
 
-        // Append values to the linked list in the specified sequence
         linkedList.Append(56);
         linkedList.Append(30);
         linkedList.Append(70);
@@ -82,9 +86,16 @@ class Program
         Console.WriteLine("Initial Sequence:");
         linkedList.Display();
 
-        linkedList.PopLast();
-
-        Console.WriteLine("\nSequence after popping the last element:");
-        linkedList.Display();
+        Node<int> nodeToInsertAfter = linkedList.Search(30);
+        if (nodeToInsertAfter != null)
+        {
+            linkedList.InsertAfter(nodeToInsertAfter, 40);
+            Console.WriteLine("\nFinal Sequence after inserting 40 after 30:");
+            linkedList.Display();
+        }
+        else
+        {
+            Console.WriteLine("Node with value 30 not found.");
+        }
     }
 }
