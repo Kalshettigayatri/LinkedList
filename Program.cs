@@ -1,6 +1,6 @@
 ﻿using System;
 
-class Node<T>
+class Node<T> where T : IComparable<T>
 {
     public T Data { get; set; }
     public Node<T> Next { get; set; }
@@ -12,58 +12,34 @@ class Node<T>
     }
 }
 
-class LinkedList<T>
+class SortedLinkedList<T> where T : IComparable<T>
 {
-    public Node<T> Head { get; private set; }
+    private Node<T> head;
 
-    public void Append(T data)
+    public void Add(T data)
     {
         Node<T> newNode = new Node<T>(data);
 
-        if (Head == null)
+        if (head == null || head.Data.CompareTo(data) > 0)
         {
-            Head = newNode;
+            newNode.Next = head;
+            head = newNode;
         }
         else
         {
-            Node<T> current = Head;
-            while (current.Next != null)
+            Node<T> current = head;
+            while (current.Next != null && current.Next.Data.CompareTo(data) < 0)
             {
                 current = current.Next;
             }
+            newNode.Next = current.Next;
             current.Next = newNode;
         }
     }
 
-    public Node<T> Search(T key)
-    {
-        Node<T> current = Head;
-        while (current != null)
-        {
-            if (current.Data.Equals(key))
-            {
-                return current;
-            }
-            current = current.Next;
-        }
-        return null; // Node with the given key not found
-    }
-
-    public void InsertAfter(Node<T> node, T data)
-    {
-        if (node == null)
-        {
-            throw new ArgumentNullException(nameof(node));
-        }
-
-        Node<T> newNode = new Node<T>(data);
-        newNode.Next = node.Next;
-        node.Next = newNode;
-    }
-
     public void Display()
     {
-        Node<T> current = Head;
+        Node<T> current = head;
         while (current != null)
         {
             Console.Write(current.Data + "->");
@@ -77,25 +53,14 @@ class Program
 {
     static void Main(string[] args)
     {
-        LinkedList<int> linkedList = new LinkedList<int>();
+        SortedLinkedList<int> sortedList = new SortedLinkedList<int>();
 
-        linkedList.Append(56);
-        linkedList.Append(30);
-        linkedList.Append(70);
+        sortedList.Add(56);
+        sortedList.Add(30);
+        sortedList.Add(40);
+        sortedList.Add(70);
 
-        Console.WriteLine("Initial Sequence:");
-        linkedList.Display();
-
-        Node<int> nodeToInsertAfter = linkedList.Search(30);
-        if (nodeToInsertAfter != null)
-        {
-            linkedList.InsertAfter(nodeToInsertAfter, 40);
-            Console.WriteLine("\nFinal Sequence after inserting 40 after 30:");
-            linkedList.Display();
-        }
-        else
-        {
-            Console.WriteLine("Node with value 30 not found.");
-        }
+        Console.WriteLine("Final Sequence:");
+        sortedList.Display();
     }
 }
