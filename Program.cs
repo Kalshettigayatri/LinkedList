@@ -1,48 +1,62 @@
 ﻿using System;
-using System.Collections.Generic;
 
-class StackOperations
+class LinkedList<T>
 {
-    static void Main(string[] args)
+    public class Node
     {
-        Console.WriteLine("Stack Operations using LinkedList in C#");
+        public T Value { get; set; }
+        public Node Next { get; set; }
+    }
 
-        Stack<int> myStack = new Stack<int>();
+    private Node head;
 
-        myStack.Push(56);
-        myStack.Push(70);
+    public void Add(T value)
+    {
+        Node newNode = new Node { Value = value, Next = head };
+        head = newNode;
+    }
 
-        Console.WriteLine("Initial Sequence:");
-        foreach (var item in myStack)
+    public void Pop()
+    {
+        if (head != null)
         {
-            Console.Write(item + "->");
-        }
-
-        // Insert 30 between 56 and 70
-        InsertBetween(myStack, 30, 56, 70);
-
-        Console.WriteLine("\nFinal Sequence:");
-        foreach (var item in myStack)
-        {
-            Console.Write(item + "->");
+            head = head.Next;
         }
     }
 
-    static void InsertBetween<T>(Stack<T> stack, T valueToInsert, T valueAfter, T valueBefore)
+    public void Display()
     {
-        Stack<T> tempStack = new Stack<T>();
-
-        while (stack.Count > 0 && !stack.Peek().Equals(valueAfter))
+        Node current = head;
+        while (current != null)
         {
-            tempStack.Push(stack.Pop());
+            Console.Write(current.Value);
+            if (current.Next != null)
+            {
+                Console.Write("->");
+            }
+            current = current.Next;
         }
+        Console.WriteLine();
+    }
+}
 
-        stack.Push(valueAfter);
-        stack.Push(valueToInsert);
+class LinkedListOperations
+{
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Linked List Operations using Generics in C#");
 
-        while (tempStack.Count > 0)
-        {
-            stack.Push(tempStack.Pop());
-        }
+        LinkedList<int> myList = new LinkedList<int>();
+        myList.Add(70);
+        myList.Add(30);
+        myList.Add(56);
+
+        Console.WriteLine("Initial Sequence:");
+        myList.Display();
+
+        myList.Pop();
+
+        Console.WriteLine("Final Sequence:");
+        myList.Display();
     }
 }
