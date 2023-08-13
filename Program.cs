@@ -1,62 +1,90 @@
 ﻿using System;
 
+class Node<T>
+{
+    public T Data { get; set; }
+    public Node<T> Next { get; set; }
+
+    public Node(T data)
+    {
+        Data = data;
+        Next = null;
+    }
+}
+
 class LinkedList<T>
 {
-    public class Node
-    {
-        public T Value { get; set; }
-        public Node Next { get; set; }
-    }
+    private Node<T> head;
 
-    private Node head;
-
-    public void Add(T value)
+    public void Append(T data)
     {
-        Node newNode = new Node { Value = value, Next = head };
-        head = newNode;
-    }
+        Node<T> newNode = new Node<T>(data);
 
-    public void Pop()
-    {
-        if (head != null)
+        if (head == null)
         {
-            head = head.Next;
+            head = newNode;
+        }
+        else
+        {
+            Node<T> current = head;
+            while (current.Next != null)
+            {
+                current = current.Next;
+            }
+            current.Next = newNode;
         }
     }
 
     public void Display()
     {
-        Node current = head;
+        Node<T> current = head;
         while (current != null)
         {
-            Console.Write(current.Value);
-            if (current.Next != null)
-            {
-                Console.Write("->");
-            }
+            Console.Write(current.Data + "->");
             current = current.Next;
         }
-        Console.WriteLine();
+        Console.WriteLine("null");
+    }
+
+    public void PopLast()
+    {
+        if (head == null)
+        {
+            throw new InvalidOperationException("LinkedList is empty");
+        }
+        else if (head.Next == null)
+        {
+            head = null;
+        }
+        else
+        {
+            Node<T> current = head;
+            while (current.Next.Next != null)
+            {
+                current = current.Next;
+            }
+            current.Next = null;
+        }
     }
 }
 
-class LinkedListOperations
+class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("Linked List Operations using Generics in C#");
+        LinkedList<int> linkedList = new LinkedList<int>();
 
-        LinkedList<int> myList = new LinkedList<int>();
-        myList.Add(70);
-        myList.Add(30);
-        myList.Add(56);
+        // Append values to the linked list in the specified sequence
+        linkedList.Append(56);
+        linkedList.Append(30);
+        linkedList.Append(70);
 
         Console.WriteLine("Initial Sequence:");
-        myList.Display();
+        linkedList.Display();
 
-        myList.Pop();
+        linkedList.PopLast();
 
-        Console.WriteLine("Final Sequence:");
-        myList.Display();
+        Console.WriteLine("\nSequence after popping the last element:");
+        linkedList.Display();
     }
 }
