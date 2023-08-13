@@ -1,10 +1,64 @@
-﻿namespace LInkedList
+﻿using System;
+
+class Node<T>
 {
-    internal class LinkedList
+    public T Data { get; set; }
+    public Node<T> Next { get; set; }
+
+    public Node(T data)
     {
-        static void Main(string[] args)
+        Data = data;
+        Next = null;
+    }
+}
+
+class LinkedList<T>
+{
+    private Node<T> head;
+
+    public void Add(T data)
+    {
+        Node<T> newNode = new Node<T>(data);
+
+        if (head == null)
         {
-            Console.WriteLine("Welcome to LinkedList program!");
+            head = newNode;
         }
+        else
+        {
+            Node<T> current = head;
+            while (current.Next != null)
+            {
+                current = current.Next;
+            }
+            current.Next = newNode;
+        }
+    }
+
+    public void Display()
+    {
+        Node<T> current = head;
+        while (current != null)
+        {
+            Console.Write(current.Data + " ");
+            current = current.Next;
+        }
+        Console.WriteLine();
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        LinkedList<int> linkedList = new LinkedList<int>();
+
+        // Add values to the linked list
+        linkedList.Add(56);
+        linkedList.Add(30);
+        linkedList.Add(70);
+
+        // Display the linked list
+        linkedList.Display();
     }
 }
