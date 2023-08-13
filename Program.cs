@@ -26,12 +26,8 @@ class LinkedList<T>
         }
         else
         {
-            Node<T> current = head;
-            while (current.Next != null)
-            {
-                current = current.Next;
-            }
-            current.Next = newNode;
+            newNode.Next = head;
+            head = newNode;
         }
     }
 
@@ -40,10 +36,10 @@ class LinkedList<T>
         Node<T> current = head;
         while (current != null)
         {
-            Console.Write(current.Data + " ");
+            Console.Write(current.Data + "->");
             current = current.Next;
         }
-        Console.WriteLine();
+        Console.WriteLine("null");
     }
 }
 
@@ -53,10 +49,10 @@ class Program
     {
         LinkedList<int> linkedList = new LinkedList<int>();
 
-        // Add values to the linked list
-        linkedList.Add(56);
-        linkedList.Add(30);
+        // Add values to the linked list in the specified sequence
         linkedList.Add(70);
+        linkedList.Add(30);
+        linkedList.Add(56);
 
         // Display the linked list
         linkedList.Display();
