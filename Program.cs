@@ -1,64 +1,48 @@
 ﻿using System;
+using System.Collections.Generic;
 
-class Node<T>
-{
-    public T Data { get; set; }
-    public Node<T> Next { get; set; }
-
-    public Node(T data)
-    {
-        Data = data;
-        Next = null;
-    }
-}
-
-class LinkedList<T>
-{
-    private Node<T> head;
-
-    public void Append(T data)
-    {
-        Node<T> newNode = new Node<T>(data);
-
-        if (head == null)
-        {
-            head = newNode;
-        }
-        else
-        {
-            Node<T> current = head;
-            while (current.Next != null)
-            {
-                current = current.Next;
-            }
-            current.Next = newNode;
-        }
-    }
-
-    public void Display()
-    {
-        Node<T> current = head;
-        while (current != null)
-        {
-            Console.Write(current.Data + "->");
-            current = current.Next;
-        }
-        Console.WriteLine("null");
-    }
-}
-
-class Program
+class StackOperations
 {
     static void Main(string[] args)
     {
-        LinkedList<int> linkedList = new LinkedList<int>();
+        Console.WriteLine("Stack Operations using LinkedList in C#");
 
-        // Append values to the linked list in the specified sequence
-        linkedList.Append(56);
-        linkedList.Append(30);
-        linkedList.Append(70);
+        Stack<int> myStack = new Stack<int>();
 
-        // Display the linked list
-        linkedList.Display();
+        myStack.Push(56);
+        myStack.Push(70);
+
+        Console.WriteLine("Initial Sequence:");
+        foreach (var item in myStack)
+        {
+            Console.Write(item + "->");
+        }
+
+        // Insert 30 between 56 and 70
+        InsertBetween(myStack, 30, 56, 70);
+
+        Console.WriteLine("\nFinal Sequence:");
+        foreach (var item in myStack)
+        {
+            Console.Write(item + "->");
+        }
+    }
+
+    static void InsertBetween<T>(Stack<T> stack, T valueToInsert, T valueAfter, T valueBefore)
+    {
+        Stack<T> tempStack = new Stack<T>();
+
+        while (stack.Count > 0 && !stack.Peek().Equals(valueAfter))
+        {
+            tempStack.Push(stack.Pop());
+        }
+
+        stack.Push(valueAfter);
+        stack.Push(valueToInsert);
+
+        while (tempStack.Count > 0)
+        {
+            stack.Push(tempStack.Pop());
+        }
     }
 }
